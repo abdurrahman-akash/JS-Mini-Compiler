@@ -8,6 +8,8 @@ static size_t pos = 0;
 static char ch = 0;
 
 static Token token;
+static Token next;
+static int has_next = 0;
 
 static void advance_char() {
     if (ch) {
@@ -17,8 +19,29 @@ static void advance_char() {
 }
 
 static void skip_ws() {
-    while (isspace((unsigned char)ch))
-        advance_char();
+    while (1) {
+        if (isspace((unsigned char)ch)) {
+            advance_char();
+        } else if (ch == '/') {
+            size_t saved_pos = pos;
+            char saved_ch = ch;
+            advance_char();
+            if (ch == '/') {
+                // Single line comment - skip to end of line
+                while (ch && ch != '\n') {
+                    advance_char();
+                }
+                if (ch == '\n') advance_char();
+            } else {
+                // Not a comment, restore position
+                pos = saved_pos;
+                ch = saved_ch;
+                break;
+            }
+        } else {
+            break;
+        }
+    }
 }
 
 static Token make(TokenType t) {
@@ -48,6 +71,16 @@ static Token ident_or_kw() {
 
     if (strcmp(buf,"let")==0)
         return make(TOKEN_LET);
+    if (strcmp(buf,"if")==0)
+        return make(TOKEN_IF);
+    if (strcmp(buf,"else")==0)
+        return make(TOKEN_ELSE);
+    if (strcmp(buf,"while")==0)
+        return make(TOKEN_WHILE);
+    if (strcmp(buf,"true")==0)
+        return make(TOKEN_TRUE);
+    if (strcmp(buf,"false")==0)
+        return make(TOKEN_FALSE);
 
     Token t = make(TOKEN_IDENTIFIER);
     strcpy(t.lexeme, buf);
@@ -68,11 +101,64 @@ static Token next_token() {
         case '-': t=make(TOKEN_MINUS);  advance_char(); return t;
         case '*': t=make(TOKEN_STAR);   advance_char(); return t;
         case '/': t=make(TOKEN_SLASH);  advance_char(); return t;
-        case '=': t=make(TOKEN_ASSIGN); advance_char(); return t;
         case ';': t=make(TOKEN_SEMI);   advance_char(); return t;
         case '(': t=make(TOKEN_LPAREN); advance_char(); return t;
         case ')': t=make(TOKEN_RPAREN); advance_char(); return t;
+        case '{': t=make(TOKEN_LBRACE); advance_char(); return t;
+        case '}': t=make(TOKEN_RBRACE); advance_char(); return t;
         case ',': t=make(TOKEN_COMMA);  advance_char(); return t;
+        case '=':
+            advance_char();
+            if (ch == '=') {
+                t = make(TOKEN_EQ);
+                advance_char();
+            } else {
+                t = make(TOKEN_ASSIGN);
+            }
+            return t;
+        case '!':
+            advance_char();
+            if (ch == '=') {
+                t = make(TOKEN_NE);
+                advance_char();
+            } else {
+                t = make(TOKEN_NOT);
+            }
+            return t;
+        case '<':
+            advance_char();
+            if (ch == '=') {
+                t = make(TOKEN_LE);
+                advance_char();
+            } else {
+                t = make(TOKEN_LT);
+            }
+            return t;
+        case '>':
+            advance_char();
+            if (ch == '=') {
+                t = make(TOKEN_GE);
+                advance_char();
+            } else {
+                t = make(TOKEN_GT);
+            }
+            return t;
+        case '&':
+            advance_char();
+            if (ch == '&') {
+                t = make(TOKEN_AND);
+                advance_char();
+                return t;
+            }
+            break;
+        case '|':
+            advance_char();
+            if (ch == '|') {
+                t = make(TOKEN_OR);
+                advance_char();
+                return t;
+            }
+            break;
     }
 
     fprintf(stderr,"Unexpected character '%c'\n", ch);
@@ -83,15 +169,29 @@ void init_lexer(const char *s) {
     src = s;
     pos = 0;
     ch = src[0];
+    has_next = 0;
     advance_token();
 }
 
 void advance_token() {
-    token = next_token();
+    if (has_next) {
+        token = next;
+        has_next = 0;
+    } else {
+        token = next_token();
+    }
 }
 
 Token current_tok() {
     return token;
+}
+
+Token peek_token() {
+    if (!has_next) {
+        next = next_token();
+        has_next = 1;
+    }
+    return next;
 }
 
 void expect(TokenType t, const char *msg) {
