@@ -1,80 +1,81 @@
-// Test 1: If statement
-let x = 10;
-if (x > 5) {
-    print(100);
+// Error Handling Test Suite
+
+console.log("=== Basic Try-Catch ===");
+
+try {
+    console.log("In try block");
+    throw "Something went wrong!";
+    console.log("This should not execute");
+} catch (e) {
+    console.log("Caught error: " + e);
 }
 
-// Test 2: If-else statement
-let y = 3;
-if (y > 5) {
-    print(200);
-} else {
-    print(300);
+console.log("After try-catch");
+
+console.log("\n=== Try-Catch with Variable ===");
+
+let result = 0;
+try {
+    result = 10;
+    throw "Error occurred";
+    result = 20;
+} catch (error) {
+    console.log("Error: " + error);
+    result = 5;
+}
+console.log("Result: " + result);
+
+console.log("\n=== Try-Finally (no error) ===");
+
+try {
+    console.log("Try block executed");
+    let x = 100;
+    console.log("x = " + x);
+} finally {
+    console.log("Finally block always runs");
 }
 
-// Test 3: Comparison operators
-let a = 10;
-let b = 20;
-if (a < b) {
-    print(1);
-}
-if (a <= 10) {
-    print(1);
-}
-if (b > a) {
-    print(1);
-}
-if (b >= 20) {
-    print(1);
-}
-if (a == 10) {
-    print(1);
-}
-if (a != b) {
-    print(1);
+console.log("\n=== Try-Catch-Finally ===");
+
+try {
+    console.log("Starting operation...");
+    throw "Operation failed";
+} catch (err) {
+    console.log("Handled: " + err);
+} finally {
+    console.log("Cleanup completed");
 }
 
-// Test 4: Logical operators
-let p = 1;
-let q = 0;
-if (p && q) {
-    print(400);
-} else {
-    print(500);
-}
+console.log("\n=== Nested Try-Catch ===");
 
-if (p || q) {
-    print(600);
-}
-
-if (!q) {
-    print(700);
-}
-
-// Test 5: While loop
-let counter = 0;
-while (counter < 3) {
-    print(counter);
-    counter = counter + 1;
-}
-
-// Test 6: Nested control flow
-let i = 0;
-while (i < 2) {
-    if (i == 0) {
-        print(800);
-    } else {
-        print(900);
+try {
+    console.log("Outer try");
+    try {
+        console.log("Inner try");
+        throw "Inner error";
+    } catch (e) {
+        console.log("Inner catch: " + e);
     }
-    i = i + 1;
+    console.log("After inner try-catch");
+} catch (e) {
+    console.log("Outer catch: " + e);
 }
 
-// Test 7: Boolean values
-let t = true;
-let f = false;
-if (t) {
-    print(1000);
+console.log("\n=== Function with Error Handling ===");
+
+function divide(a, b) {
+    try {
+        if (b == 0) {
+            throw "Division by zero";
+        }
+        return a / b;
+    } catch (e) {
+        console.log("Error in divide: " + e);
+        return 0;
+    }
 }
-if (!f) {
-    print(1100);
-}
+
+console.log("10 / 2 = " + divide(10, 2));
+console.log("10 / 0 = " + divide(10, 0));
+
+console.log("\n=== All Error Handling Tests Passed! ===");

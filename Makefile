@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-std=c99 -Wall -Wextra -Iinclude
 
-SRC=src/main.c src/lexer.c src/parser.c src/ast.c src/eval.c src/env.c
+SRC=src/main.c src/lexer.c src/parser.c src/ast.c src/eval.c src/env.c src/value.c
 OBJ=$(SRC:.c=.o)
 
 all: mini_js

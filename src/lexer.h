@@ -6,17 +6,27 @@
 typedef enum {
     TOKEN_EOF,
     TOKEN_NUMBER,
+    TOKEN_STRING,
     TOKEN_IDENTIFIER,
     TOKEN_LET,
+    TOKEN_FUNCTION,
+    TOKEN_RETURN,
     TOKEN_IF,
     TOKEN_ELSE,
     TOKEN_WHILE,
+    TOKEN_TRY,
+    TOKEN_CATCH,
+    TOKEN_FINALLY,
+    TOKEN_THROW,
     TOKEN_TRUE,
     TOKEN_FALSE,
     TOKEN_LPAREN,
     TOKEN_RPAREN,
     TOKEN_LBRACE,
     TOKEN_RBRACE,
+    TOKEN_LBRACKET,
+    TOKEN_RBRACKET,
+    TOKEN_DOT,
     TOKEN_PLUS,
     TOKEN_MINUS,
     TOKEN_STAR,
@@ -32,12 +42,13 @@ typedef enum {
     TOKEN_OR,
     TOKEN_NOT,
     TOKEN_SEMI,
-    TOKEN_COMMA
+    TOKEN_COMMA,
+    TOKEN_COLON
 } TokenType;
 
 typedef struct {
     TokenType type;
-    char lexeme[64];
+    char lexeme[256];
     double number;
 } Token;
 

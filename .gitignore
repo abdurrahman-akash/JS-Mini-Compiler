@@ -1,0 +1,42 @@
+# Compiled binary
+build/
+*.o
+*.out
+*.exe
+
+# Compiler output
+mini_js
+
+# Editor and IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+core
+vgcore.*
+
+# Backup files
+*.bak
+*.backup
+
+# Test output files
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Documentation
+docs/
+*.pdf
+*.docx
+test/

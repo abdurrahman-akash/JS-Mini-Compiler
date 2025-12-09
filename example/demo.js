@@ -1,61 +1,73 @@
-// Demonstration of control flow features
+// Complete JavaScript Mini-Compiler Demo
+// Showcasing all features including error handling
 
-// Example 1: Basic if statement
-let age = 20;
-if (age >= 18) {
-    print(1);  // Prints: 1 (adult)
+console.log("=== Variables and Data Types ===");
+let name = "JavaScript";
+let version = 2024;
+let isAwesome = true;
+console.log(name + " " + version);
+
+console.log("\n=== Arrays ===");
+let numbers = [10, 20, 30];
+console.log("First: " + numbers[0]);
+console.log("Length: " + numbers.length);
+
+console.log("\n=== Objects ===");
+let person = {
+    name: "Alice",
+    age: 30
+};
+console.log("Name: " + person.name);
+
+console.log("\n=== Control Flow ===");
+if (version > 2020) {
+    console.log("Modern JS");
 }
 
-// Example 2: If-else statement
-let score = 75;
-if (score >= 90) {
-    print(90);
-} else {
-    print(75);  // Prints: 75
-}
-
-// Example 3: Comparison operators
-let a = 10;
-let b = 20;
-if (a < b) print(1);   // Prints: 1
-if (a != b) print(1);  // Prints: 1
-if (b > a) print(1);   // Prints: 1
-
-// Example 4: Logical operators
-let isStudent = true;
-let hasID = true;
-if (isStudent && hasID) {
-    print(100);  // Prints: 100
-}
-
-let isMember = false;
-let isGuest = true;
-if (isMember || isGuest) {
-    print(200);  // Prints: 200
-}
-
-// Example 5: While loop
-let count = 0;
-while (count < 5) {
-    print(count);  // Prints: 0, 1, 2, 3, 4
-    count = count + 1;
-}
-
-// Example 6: Factorial calculation
-let n = 5;
-let factorial = 1;
-let i = 1;
-while (i <= n) {
-    factorial = factorial * i;
+let i = 0;
+while (i < 3) {
+    console.log("Count: " + i);
     i = i + 1;
 }
-print(factorial);  // Prints: 120
 
-// Example 7: Nested control flow
-let x = 0;
-while (x < 3) {
-    if (x == 1) {
-        print(999);  // Prints once when x is 1
-    }
-    x = x + 1;
+console.log("\n=== Functions ===");
+function greet(name) {
+    return "Hello, " + name;
 }
+console.log(greet("World"));
+
+console.log("\n=== Recursion ===");
+function factorial(n) {
+    if (n <= 1) {
+        return 1;
+    }
+    return n * factorial(n - 1);
+}
+console.log("5! = " + factorial(5));
+
+console.log("\n=== Error Handling ===");
+try {
+    console.log("Attempting operation...");
+    throw "Something failed";
+} catch (error) {
+    console.log("Caught: " + error);
+} finally {
+    console.log("Cleanup done");
+}
+
+function safeDivide(a, b) {
+    try {
+        if (b == 0) {
+            throw "Division by zero";
+        }
+        return a / b;
+    } catch (e) {
+        console.log("Error: " + e);
+        return 0;
+    }
+}
+
+console.log("10 / 2 = " + safeDivide(10, 2));
+console.log("10 / 0 = " + safeDivide(10, 0));
+
+console.log("\n=== All Features Working! ===");
